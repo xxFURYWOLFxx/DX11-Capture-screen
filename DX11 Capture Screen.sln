@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DX11 Capture screen", "DX11 Capture screen\DX11 Capture screen.vcxproj", "{D76106CD-FBA4-40F2-9D7C-43DC877A8796}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Debug|x64.ActiveCfg = Debug|x64
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Debug|x64.Build.0 = Debug|x64
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Debug|x86.ActiveCfg = Debug|Win32
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Debug|x86.Build.0 = Debug|Win32
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Release|x64.ActiveCfg = Release|x64
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Release|x64.Build.0 = Release|x64
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Release|x86.ActiveCfg = Release|Win32
+		{D76106CD-FBA4-40F2-9D7C-43DC877A8796}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92A39EDB-550B-47C1-909A-E5DBC7EDA0E5}
+	EndGlobalSection
+EndGlobal
