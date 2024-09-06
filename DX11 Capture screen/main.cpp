@@ -258,6 +258,8 @@ void DX11::CaptureAndAnalyze() {
 }
 
 HRESULT DX11::AnalyzeScreenRegion() {
+    bool findClosest = true;
+
     D3D11_TEXTURE2D_DESC desc;
     desktopTexture->GetDesc(&desc);
 
@@ -280,7 +282,9 @@ HRESULT DX11::AnalyzeScreenRegion() {
     if (SUCCEEDED(hr)) {
         PBYTE dataPtr = static_cast<PBYTE>(mappedResource.pData);
 
-        foundLocation = { -1, -1 };  // Reset found location
+        std::vector<PixelLocation> matchingPixels;
+        int centerX = regionWidth / 2;
+        int centerY = regionHeight / 2;
 
         for (int y = 0; y < regionHeight; ++y) {
             for (int x = 0; x < regionWidth; ++x) {
@@ -294,17 +298,39 @@ HRESULT DX11::AnalyzeScreenRegion() {
                         GetRValue(targetColor),
                         GetGValue(targetColor),
                         GetBValue(targetColor)) <= tolerance) {
-                        foundLocation = { x, y };
-                        context->Unmap(stagingTexture, 0);
-                        return S_OK;  // Found a matching color
+                        matchingPixels.push_back({x, y});
+                        if (!findClosest) {
+                            // If we're not finding the closest, we can return the first (highest) match
+                            context->Unmap(stagingTexture, 0);
+                            foundLocation = {x, y};
+                            return S_OK;
+                        }
+                        break;  // No need to check other colors for this pixel
                     }
                 }
             }
         }
 
         context->Unmap(stagingTexture, 0);
+
+        if (!matchingPixels.empty()) {
+            if (findClosest) {
+                // Find the pixel closest to the center
+                foundLocation = *std::min_element(matchingPixels.begin(), matchingPixels.end(),
+                    [centerX, centerY](const PixelLocation& a, const PixelLocation& b) {
+                        int distA = (a.x - centerX) * (a.x - centerX) + (a.y - centerY) * (a.y - centerY);
+                        int distB = (b.x - centerX) * (b.x - centerX) + (b.y - centerY) * (b.y - centerY);
+                        return distA < distB;
+                    });
+            } else {
+                // We've already found the highest pixel and returned, but just in case:
+                foundLocation = matchingPixels[0];
+            }
+            return S_OK;  // Found at least one matching color
+        }
     }
 
+    foundLocation = {-1, -1};  // Reset found location if no match
     return hr;
 }
 
