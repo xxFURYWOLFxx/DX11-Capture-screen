@@ -189,6 +189,11 @@ void DX11::CaptureAndAnalyze() {
                 desktopResource = nullptr;
             }
 
+            // Release the previous frame before acquiring a new one
+            if (desktopDupl) {
+                desktopDupl->ReleaseFrame();
+            }
+
             hr = desktopDupl->AcquireNextFrame(TIMEOUT_MS, &frameInfo, &desktopResource);
 
             if (hr == DXGI_ERROR_WAIT_TIMEOUT) {
@@ -236,7 +241,7 @@ void DX11::CaptureAndAnalyze() {
             else {
                 std::cerr << "Failed to query desktop texture. HRESULT: 0x" << std::hex << hr << std::dec << std::endl;
             }
-            desktopDupl->ReleaseFrame();
+            // Note: We don't call ReleaseFrame() here anymore, as it's now called at the beginning of the loop
         }
         else {
             std::cerr << "Failed to acquire frame after " << MAX_ATTEMPTS << " attempts." << std::endl;
